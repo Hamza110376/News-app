@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import NewsItem from './NewsItem'
 
-export class News extends Component {
-  articles=
-    [
+
+{
+    "status": "ok",
+    "totalResults": 36,
+    "articles": [
       {
         "source": {
           "id": "the-wall-street-journal",
@@ -265,33 +265,4 @@ export class News extends Component {
         "content": "“The Batman” landed a bigger opening weekend than Warner Bros., the studio behind the comic book adventure, initially expected.\r\nThe newest superhero epic, starring Robert Pattinson as an exceptional… [+2832 chars]"
       }
     ]
-  
-  constructor(){
-    super();
-    console.log("hello")
-    this.state={
-     articles: this.articles,
-     loading:false,
-
-
-    }
   }
-  render() {
-    return (
-      <div className='container my-3'>
-      <h2>Top-Headlines</h2>
-      <div className='row my-3'>
-      {this.state.articles.map((element)=>{
-        return <div className="col-md-3 my-3" key={element.url}>
-      <NewsItem  title={element.title} description={element.description} imageUrl={element.urlToImage} newsUrl={element.url}/>
-      </div>
-      })}
-      
-      </div>
-      </div>
-      
-    )
-  }
-}
-
-export default News
