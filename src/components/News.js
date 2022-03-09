@@ -280,16 +280,17 @@ export class News extends Component {
 
  async componentDidMount(){
    
-    let url="https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b";
+    let url="https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b&pageSize=20";
     let data=await fetch(url);
     let parseData=await data.json();
     console.log(parseData);
-    this.setState({articles: parseData.articles})
+    this.setState({articles: parseData.articles, parseData, totalResults:parseData.totalResults})
 
   }
   handlePrevClick=async ()=>{
+   
     console.log("Previous")
-    let url=`https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b&page=${this.state.page-1}`;
+    let url=`https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b&page=${this.state.page-1}&pageSize=20`;
     let data=await fetch(url);
     let parseData=await data.json();
     console.log(parseData);
@@ -301,9 +302,13 @@ export class News extends Component {
 
   }
   handleNextClick=async ()=>{
+    if(this.state.page+1> Math.ceil(this.state.totalResults/20)){
+
+    }
+    else{
     console.log("Next")
 
-    let url=`https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b&page=${this.state.page+1}`;
+    let url=`https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b&page=${this.state.page+1}&pageSize=20`;
     let data=await fetch(url);
     let parseData=await data.json();
     console.log(parseData);
@@ -312,7 +317,7 @@ export class News extends Component {
     this.state({
       page:this.state.page+1
     })
-
+  }
   }
   render() {
     return (
@@ -327,7 +332,7 @@ export class News extends Component {
       
       </div>
       <div className="d-flex justify-content-between">
-      <button disabled={this.state.page<=1} type="button" className="btn btn-dark" onClick={this.handlePrevClick}>&larr; Previous</button>
+      <button type="button" className="btn btn-dark" onClick={this.handlePrevClick}>&larr; Previous</button>
       <button type="button" className="btn btn-dark "  onClick={this.handleNextClick}>Next &rarr;</button>
 
     </div>
