@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
+import Spinner from './Spinner;';
 
 export class News extends Component {
   articles=
@@ -281,48 +282,51 @@ export class News extends Component {
  async componentDidMount(){
    
     let url="https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b&pageSize=20";
+    this.setState({loading: true});
     let data=await fetch(url);
     let parseData=await data.json();
     console.log(parseData);
-    this.setState({articles: parseData.articles, parseData, totalResults:parseData.totalResults})
+    this.setState({articles: parseData.articles, parseData, totalResults:parseData.totalResults,loading: false })
 
   }
   handlePrevClick=async ()=>{
    
     console.log("Previous")
     let url=`https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b&page=${this.state.page-1}&pageSize=20`;
+    this.setState({loading: true});
     let data=await fetch(url);
     let parseData=await data.json();
     console.log(parseData);
     this.setState({articles: parseData.articles})
 
     this.state({
-      page:this.state.page-1
+      page:this.state.page-1,
+      articles: this.parseData.articles,
+      loading: false
     })
 
   }
   handleNextClick=async ()=>{
-    if(this.state.page+1> Math.ceil(this.state.totalResults/20)){
-
-    }
-    else{
+    if(! this.state.page+1> Math.ceil(this.state.totalResults/20)){
     console.log("Next")
-
     let url=`https://newsapi.org/v2/everything?q=apple&from=2022-03-08&to=2022-03-08&sortBy=popularity&apiKey=be814022afec4194b3d867e5c4c9330b&page=${this.state.page+1}&pageSize=20`;
+   this.setState({loading: true});
     let data=await fetch(url);
     let parseData=await data.json();
-    console.log(parseData);
     this.setState({articles: parseData.articles})
 
     this.state({
-      page:this.state.page+1
+      page:this.state.page+1,
+      articles: this.parseData.articles,
+      loading: false
     })
   }
   }
   render() {
     return (
       <div className='container my-3'>
-      <h2>Top-Headlines</h2>
+      <h2 className='text-center'>Top-Headlines</h2>
+      {this.state.loading && <Spinner/>}
       <div className='row my-3'>
       {this.state.articles.map((element)=>{
         return <div className="col-md-3 my-3" key={element.url}>
